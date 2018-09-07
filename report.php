@@ -4,7 +4,7 @@ require('fpdf/fpdf.php');
 
 $dd= (empty($_GET['date']))? date('d.m.Y',strtotime('today midnight')):$_GET['date'];
 $today=strtotime($dd);
-$yesterday=date('d.m.Y H:i:s', ($ind-86400));
+$yesterday=strtotime(date('d.m.Y H:i:s', ($today-86400)));
 function zabbix_login(){
 	$ch = curl_init();
 	$cookie_file = '/var/tmp/zbxcookie.txt';
@@ -98,7 +98,7 @@ file_save($c4,$chart4);
 
 class PDF extends FPDF
 {
-// Page header
+	// Page header
 function Header()
 {
     // Logo
@@ -110,7 +110,7 @@ function Header()
     // Move to the right
     $this->Cell(65);
     
-    $d1 = date("d.m.Y", $yesterday);// Title
+    $d1 = date("d.m.Y", $GLOBALS['yesterday']);// Title
     $str = iconv('UTF-8', 'windows-1251', "Отчет МП $d1");
     $this->Cell(70,10,$str,1,0,'C');
     // Line break
